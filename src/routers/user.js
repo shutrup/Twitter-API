@@ -5,6 +5,7 @@ const User = require('../models/user')
 const router = new express.Router()
 
 // Enpoints
+// Create a new user
 router.post('/users', async (req, res) => {
     const user = new User(req.body)
 
@@ -15,6 +16,16 @@ router.post('/users', async (req, res) => {
         res.status(400).send(error)
     }
 })
+
+// Fetch the users
+router.get('/users', async (req, res) => {
+    try {
+        const users = await User.find({})
+        res.send(users)
+    } catch (error) {
+        res.status(500).send(e)
+    }
+});
 
 module.exports = router
 
