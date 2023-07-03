@@ -63,6 +63,13 @@ const userSchema = new mongoose.Schema({
     }
 })
 
+// The relationship between the tweets and the username
+userSchema.virtual('tweets', {
+    ref: 'Tweet',
+    localField: '_id',
+    foreignField: 'user'
+})
+
 // To Delete Password prior to GET
 userSchema.methods.toJSON = function () {
     const user = this
@@ -83,6 +90,23 @@ userSchema.pre('save', async function(next) {
 
     next()
 })
+
+// Authentication Check
+userSchema.statics.findByCredentials = async (email, password) => {
+    const user = await User.findOne({ email })
+
+    if (!user) {
+        throw Error('Unable to Login')
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password)
+
+    if (!isMatch) {
+        throw Error('Unable to Login')
+    }
+
+    return user
+}
 
 const User = mongoose.model('User', userSchema)
 
