@@ -17,6 +17,21 @@ router.post('/users', async (req, res) => {
     }
 })
 
+// Delete User Router
+router.delete('/users/:id', async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id)
+
+        if (!user) {
+            return res.status(400).send('')
+        }
+
+        res.send('User delete')
+    } catch (error) {
+        res.status(500).send(error)
+    }
+});
+
 // Fetch the users
 router.get('/users', async (req, res) => {
     try {
