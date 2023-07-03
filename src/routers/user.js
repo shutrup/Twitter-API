@@ -53,5 +53,21 @@ router.post('/users/login', async (req, res) => {
     }
 });
 
+// Fetch a single user 
+router.get('/users/:id', async (req, res) => {
+    try {
+        const _id = req.params.id
+        const user = await User.findById(_id)
+
+        if (!user) {
+            return res.status(404).send('')
+        }
+
+        res.send(user)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+});
+
 module.exports = router
 
