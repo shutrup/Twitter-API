@@ -3,6 +3,7 @@ const User = require('../models/user')
 const multer  = require('multer')
 const sharp  = require('sharp')
 const auth  = require('../middleware/auth')
+const e = require('express')
 
 // Original Router
 const router = new express.Router()
@@ -112,6 +113,29 @@ router.get('/users/:id/avatar', async (req, res) => {
         res.send(user.avatar)
     } catch (error) {
         res.status(404).send(error)
+    }
+});
+
+// Router for Following
+router.put('/users/:id/follow', auth, async (req, res) => {
+    if (req.user.id != req.params.id) {
+        try {
+            const user = await User.findById(req.params.id)
+            if (!user.followers.includes(req.user.id)) {
+                await user.updateOne({ $push: { followers: req.user.id } })
+                await req.user.updateOne({ $push: { following: req.params.id } })
+                res.status(200).json('user has been followed')
+            } 
+            else {
+                res.status(403).json('you already follow this user')
+            }
+        } 
+        catch (error) {
+            res.status(500).json(error)
+        }
+    }
+    else {
+        res.status(403).json('you cannot follow yourself')
     }
 });
 
