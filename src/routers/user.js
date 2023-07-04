@@ -164,7 +164,6 @@ router.put('/users/:id/unfollow', auth, async (req, res) => {
 
 router.patch('/users/me', auth, async (req, res) => {
     const updates = Object.keys(req.body)
-    console.log(updates)
     const allowedUpdate = ['name', 'email', 'password', 'website', 'bio', 'location']
 
     const isValidOperations = updates.every((update) => allowedUpdate.includes(update))
@@ -177,10 +176,6 @@ router.patch('/users/me', auth, async (req, res) => {
 
     try {
         const user = req.user 
-        console.log(user)
-        console.log(req.body)
-        console.log(user['name'])
-        console.log(req.body['name'])
         updates.forEach((update) => {user[update] = req.body[update]})
         await user.save()
 
