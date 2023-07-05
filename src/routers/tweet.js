@@ -101,7 +101,7 @@ router.put('/tweets/:id/unlike', auth, async (req, res) => {
             res.status(200).json('tweet has been unliked')
         }
         else {
-            res.status(403).json('you dont unfollow this tweet')
+            res.status(403).json('you have already unlike this tweet')
         }
     }
     catch (error) {
