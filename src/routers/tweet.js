@@ -21,4 +21,14 @@ router.post('/tweets', auth, async (req, res) => {
     }
 });
 
+// Fetch All Tweets
+router.get('/tweets', async (req, res) => {
+    try {
+        const tweets = await Tweet.find()
+        res.status(200).send(tweets)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+});
+
 module.exports = router
