@@ -92,4 +92,21 @@ router.put('/tweets/:id/like', auth, async (req, res) => {
     }
 });
 
+// UnLike Tweet Function
+router.put('/tweets/:id/unlike', auth, async (req, res) => {
+    try {
+        const tweet = await Tweet.findById(req.params.id)
+        if (tweet.likes.includes(req.user.id)) {
+            await tweet.updateOne({ $pull: { likes: req.user.id } })
+            res.status(200).json('tweet has been unliked')
+        }
+        else {
+            res.status(403).json('you dont unfollow this tweet')
+        }
+    }
+    catch (error) {
+        res.status(500).json(error)   
+    }
+});
+
 module.exports = router
