@@ -1,8 +1,6 @@
 const express = require('express')
 const Notification = require('../models/notification')
 const auth = require('../middleware/auth')
-const router = require('./tweet')
-const e = require('express')
 
 // New Router
 const router = new express.Router()
