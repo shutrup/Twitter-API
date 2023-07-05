@@ -58,4 +58,20 @@ router.get('/tweets', async (req, res) => {
     }
 });
 
+// Fetch Tweet Image
+router.get('/tweets/:id/image', async (req, res) => {
+    try {
+        const tweet = await Tweet.findById(req.params.id)
+
+        if (!tweet || !tweet.image) {
+            throw new Error('Tweet image doesnt exist')
+        }
+
+        res.set('Content-Type', 'image/jpg')
+        res.send(tweet.image)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+});
+
 module.exports = router
