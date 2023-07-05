@@ -58,6 +58,21 @@ router.get('/tweets', async (req, res) => {
     }
 });
 
+// Fetch single tweet
+router.get('/tweets/:id', async (req, res) => {
+    try {
+        const tweet = await Tweet.findById(req.params.id)
+
+        if (!tweet) {
+            return res.status(404).send(' Tweet not founded')
+        }
+
+        res.send(tweet)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+});
+
 // Fetch Tweet Image
 router.get('/tweets/:id/image', async (req, res) => {
     try {
