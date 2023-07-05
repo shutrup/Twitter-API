@@ -77,6 +77,18 @@ userSchema.virtual('tweets', {
     foreignField: 'user'
 })
 
+userSchema.virtual('notificationSent', {
+    ref: 'Notification',
+    localField: '_id',
+    foreignField: 'notReceiverId'
+})
+
+userSchema.virtual('notificationReceived', {
+    ref: 'Notification',
+    localField: '_id',
+    foreignField: 'notSenderId'
+})
+
 // To Delete Password prior to GET
 userSchema.methods.toJSON = function () {
     const user = this
